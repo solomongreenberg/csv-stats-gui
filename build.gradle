@@ -1,0 +1,32 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+    id "application"
+}
+
+group 'com.symmons.swm'
+version '0.1'
+//mainClassName = 'main.dates.DatesKt'
+mainClassName = 'main.MainKt'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile 'no.tornado:tornadofx:1.7.17'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'joda-time', name: 'joda-time', version: '2.10.3'
+    compile group: 'com.opencsv', name: 'opencsv', version: '4.6'
+    compile group: 'io.arrow-kt', name: 'arrow-core', version: '0.8.2'
+    compile group: 'io.arrow-kt', name: 'arrow-data', version: '0.8.2'
+    compile 'org.nield:kotlin-statistics:1.2.1'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
