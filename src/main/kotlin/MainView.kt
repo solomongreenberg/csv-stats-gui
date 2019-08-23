@@ -10,6 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
+import javafx.scene.text.TextAlignment
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.StageStyle
@@ -34,51 +35,63 @@ class MainView : View() {
 
     val controller: MainController by inject()
     val csv_filename =
-        SimpleStringProperty().apply { value = "/home/solomon/Downloads/9b46a193-309b-4907-af39-301a9368bc54.csv" }
+        SimpleStringProperty().apply { value = "" }
 
     var loadButtonEnabled = false
 
     override val root = vbox {
+        minWidth = 640.0
+        maxWidth = 640.0
+        minHeight = 130.0
+        maxHeight = 130.0
         padding = Insets(10.0, 10.0, 10.0, 10.0)
         form {
-            fieldset {
-                vbox {
-                    hbox {
-                        text("Filename: ") {
-                        }
-                        field("") {
-                            textfield(csv_filename) {
-                                //isEditable = false
-                            }
-                        }
-                        button("Open"/*, graphic = imageview(Image(FILE_EMOJI_URL, 10.0, 10.0, true, false))*/) {
-                            action {
-                                // On click button
-                                val files = chooseFile( // Open file picker dialog
-                                    filters = arrayOf(
-                                        ExtensionFilter("CSV files (*.csv)", "*.csv")
-                                    ), // Only allow CSVs to be loaded
-                                    mode = FileChooserMode.Single // Only allow single file to be selected
-                                )
+            borderpane {
+                top = text("CSV Statistics App v1") {
+                    font = Font(18.0)
+                    alignment = Pos.TOP_CENTER
+                    useMaxWidth = true
+                    textAlignment = TextAlignment.CENTER
+                }
+                left = text("Filename: ") {
 
-                                if (files.isNotEmpty()) {// Make sure we've only selected one file.
-                                    csv_filename.value = files[0].absolutePath
-                                }
-
-                                //controller.loadFile(csv_filename.value)
-                            }
-                        }
-                        button("?") {
-                            action {
-                                find<HelpFragment>().openWindow(stageStyle = StageStyle.UTILITY)
-                            }
+                    alignment = Pos.CENTER_LEFT
+                }
+                center = fieldset {
+                    field("") {
+                        textfield(csv_filename) {
+                            //isEditable = false
                         }
                     }
-                    button("Load") {
-                        disableProperty().bind(csv_filename.isEmpty)
+                }
+                right = hbox {
+                    button("Open"/*, graphic = imageview(Image(FILE_EMOJI_URL, 10.0, 10.0, true, false))*/) {
                         action {
-                            controller.loadFile(csv_filename.value)
+                            // On click button
+                            val files = chooseFile( // Open file picker dialog
+                                filters = arrayOf(
+                                    ExtensionFilter("CSV files (*.csv)", "*.csv")
+                                ), // Only allow CSVs to be loaded
+                                mode = FileChooserMode.Single // Only allow single file to be selected
+                            )
+
+                            if (files.isNotEmpty()) {// Make sure we've only selected one file.
+                                csv_filename.value = files[0].absolutePath
+                            }
+
+                            //controller.loadFile(csv_filename.value)
                         }
+                    }
+                    button("?") {
+                        action {
+                            find<HelpFragment>().openWindow(stageStyle = StageStyle.UTILITY)
+                        }
+                    }
+                }
+                bottom = button("Load") {
+                    disableProperty().bind(csv_filename.isEmpty)
+                    action {
+                        controller.loadFile(csv_filename.value)
                     }
                 }
             }
